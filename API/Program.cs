@@ -1,3 +1,4 @@
+using API.Core.ServiceConfig;
 using Domain.Models.Users;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -62,6 +63,8 @@ builder.Services.AddAuthentication(options =>
 
     };
 });
+
+ServiceConfig.ConfigureServices(builder.Services);
 
 var app = builder.Build();
 

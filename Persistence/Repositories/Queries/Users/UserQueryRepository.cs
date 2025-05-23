@@ -22,6 +22,11 @@ namespace Persistence.Repositories.Queries.Users
             return await _context.Users.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
         }
 
+        public async Task<User> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email) ?? throw new EntityNotFoundException("User");
+        }
+
         public async Task<User> GetUserByIdAsync(Guid userId)
         {
             return (await _context.Users

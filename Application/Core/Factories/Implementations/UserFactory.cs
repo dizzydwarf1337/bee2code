@@ -1,6 +1,7 @@
 ﻿using Application.Core.Factories.Interfaces;
 using Application.DTO.General;
 using Domain.Exceptions.BusinessExceptions;
+using Domain.Exceptions.DataExceptions;
 using Domain.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -20,8 +21,13 @@ namespace Application.Core.Factories.Implementations
             _userManager = userManager;
         }
 
-        public async Task<User> CreateUserAsync(RegisterDto registerDto, string? userRole = "User")
+        public async Task<User> CreateUserAsync(RegisterDto registerDto, string? userRole = "Patient")
         {
+            var existingUser = await _userManager.FindByEmailAsync(registerDto.Email);
+            if (existingUser != null)
+            {
+                throw new InvalidDataProvidedException("Email");
+            }
             var user = new User
             {
                 Email = registerDto.Email,

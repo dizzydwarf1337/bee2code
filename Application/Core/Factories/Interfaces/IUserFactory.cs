@@ -10,6 +10,6 @@ namespace Application.Core.Factories.Interfaces
 {
     public interface IUserFactory
     {
-        Task<User> CreateUserAsync(RegisterDto registerDto, string? UserRole = "User");
+        Task<User> CreateUserAsync(RegisterDto registerDto, string? UserRole = "Patient");
     }
 }

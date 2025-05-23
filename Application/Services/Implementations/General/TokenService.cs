@@ -25,7 +25,7 @@ namespace Application.Services.Implementations.General
         private readonly string _issuer;
         private readonly string _audience;
 
-        public TokenService(IConfiguration configuration, IConfigurationSection jwtSettings, UserManager<User> userManager, byte[] key, string issuer, string audience)
+        public TokenService(IConfiguration configuration, UserManager<User> userManager)
         {
             _configuration = configuration;
             _userManager = userManager;
