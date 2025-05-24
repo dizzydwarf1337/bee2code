@@ -25,7 +25,7 @@ namespace Domain.Models.Researches
         public virtual User? Owner { get; set; }
 
         public virtual ICollection<LabTest>? LabTests { get; set; } = new List<LabTest>();
-        public virtual ICollection<UserResearch>? Patients { get; set; } = new List<UserResearch>();
+        public virtual ICollection<UserResearch> Patients {get;set;} = new List<UserResearch>();
 
     }
 }

@@ -1,12 +1,15 @@
 ﻿using Application.Core.Factories.Implementations;
 using Application.Core.Factories.Interfaces;
 using Application.Core.Mapper;
+using Application.Core.Validators.OwnershipValidator;
 using Application.Features.Auth.Commands.Login;
 using Application.Services.Implementations.General;
 using Application.Services.Implementations.LabTesting;
+using Application.Services.Implementations.Researches;
 using Application.Services.Implementations.Users;
 using Application.Services.Interfaces.General;
 using Application.Services.Interfaces.LabTesting;
+using Application.Services.Interfaces.Researches;
 using Application.Services.Interfaces.Users;
 using Domain.Interfaces.Commands.LabTestingCommands;
 using Domain.Interfaces.Commands.LinksCommands;
@@ -72,15 +75,19 @@ namespace API.Core.ServiceConfig
                     services.AddScoped<IFileService, FileService>();
 
                 // LabTesting
-                    services.AddScoped<ILabTestService, LabTestingService>();
+                    services.AddScoped<ILabTestService, LabTestService>();
                 //
-                //
+                // Research
+                    services.AddScoped<IResearchService, ResearchService>();
                 // Users
                     services.AddScoped<IUserService, UserService>();
+
 
             services.AddScoped<IUserFactory, UserFactory>();
 
             services.AddAutoMapper(typeof(AutoMapperProfiler).Assembly);
+
+            services.AddScoped<IOwnershipValidator, OwnershipValidator>();
 
             services.AddMediatR(config =>
             {

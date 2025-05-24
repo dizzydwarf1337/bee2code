@@ -27,7 +27,7 @@ namespace Application.Features.Auth.Commands.Register
             try
             {
                 await _authService.Register(request.RegisterDto);
-                return ApiResponse<Unit>.Success(Unit.Value);
+                return ApiResponse<Unit>.Success(Unit.Value,201);
             }
             catch (EntityCreatingException ex)
             {

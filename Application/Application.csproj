@@ -9,16 +9,22 @@
   <ItemGroup>
     <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Auth\Events\" />
+    <Folder Include="Features\LabTestsResult\Events\" />
+    <Folder Include="Features\LabTestsResult\Queries\" />
+    <Folder Include="Features\LabTests\Queries\" />
+    <Folder Include="Features\LabTests\Events\" />
+    <Folder Include="Features\Researches\Queries\" />
+    <Folder Include="Features\Users\Commands\" />
+    <Folder Include="Features\Users\Events\" />
+    <Folder Include="Features\Users\Queries\" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="14.0.0" />
     <PackageReference Include="MediatR" Version="12.5.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.5" />
-    <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="9.0.5" />
-    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.10.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.10.0" />
   </ItemGroup>
 
   <ItemGroup>
