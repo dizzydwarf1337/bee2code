@@ -76,6 +76,7 @@ namespace API.Core.ServiceConfig
 
                 // LabTesting
                     services.AddScoped<ILabTestService, LabTestService>();
+                    services.AddScoped<ILabTestResultService, LabTestResultService>();
                 //
                 // Research
                     services.AddScoped<IResearchService, ResearchService>();

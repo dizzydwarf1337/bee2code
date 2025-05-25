@@ -25,6 +25,8 @@ namespace Application.Core.Mapper
             CreateMap<CreateResearchDto, Research>();
             CreateMap<ResearchDto, Research>();
             CreateMap<Research, ResearchDto>();
+            CreateMap<LabTestResult, LabTestResultDto>();
+            CreateMap<LabTestResultDto, LabTestResult>();
         }
     }
 }

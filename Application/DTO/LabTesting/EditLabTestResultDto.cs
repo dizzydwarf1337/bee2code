@@ -8,5 +8,6 @@ namespace Application.DTO.LabTesting
 {
     public class EditLabTestResultDto
     {
+
     }
 }

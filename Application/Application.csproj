@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Auth\Events\" />
-    <Folder Include="Features\LabTestsResult\Events\" />
     <Folder Include="Features\LabTestsResult\Queries\" />
     <Folder Include="Features\LabTests\Queries\" />
     <Folder Include="Features\Users\Commands\" />

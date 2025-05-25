@@ -12,7 +12,8 @@ namespace Domain.Models.LabTesting
     {
         [Required]
         public Guid Id { get; set; } = Guid.NewGuid();
-        public string? Result { get; set; }
+        [Required]
+        public string Result { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
       
         [ForeignKey("LabTest")]
