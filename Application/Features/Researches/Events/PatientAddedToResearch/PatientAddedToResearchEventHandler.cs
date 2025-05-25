@@ -17,13 +17,13 @@ namespace Application.Features.Researches.Events.PatientAddedToResearch
 {
     public class PatientAddedToResearchEventHandler : INotificationHandler<PatientAddedToResearchEvent>
     {
-        private readonly IUserNotificationCommandRepository _userNotificationCommandRepository;
+        private readonly IUserNotificationService _userNotificationService;
         private readonly IUserQueryRepository _userQueryRepostiory;
         private readonly IResearchQueryRepository _researchQueryRepository;
 
-        public PatientAddedToResearchEventHandler(IUserNotificationCommandRepository userNotificationCommandRepository, IUserQueryRepository userQueryRepostiory, IResearchQueryRepository researchQueryRepository)
+        public PatientAddedToResearchEventHandler(IUserNotificationService userNotificationService, IUserQueryRepository userQueryRepostiory, IResearchQueryRepository researchQueryRepository)
         {
-            _userNotificationCommandRepository = userNotificationCommandRepository;
+            _userNotificationService = userNotificationService;
             _userQueryRepostiory = userQueryRepostiory;
             _researchQueryRepository = researchQueryRepository;
         }
@@ -40,14 +40,14 @@ namespace Application.Features.Researches.Events.PatientAddedToResearch
                     Message = $"You have been added to research: {research.Name}",
                     Title = "New research",
                 };
-                await _userNotificationCommandRepository.AddNotificationAsync(usNotification);
+                await _userNotificationService.AddNotificationAsync(usNotification);
                 var workerNotification = new UserNotification
                 {
                     UserId = research.OwnerId,
                     Message = $"{user.FirstName} {user.LastName} has been added to the research: {research.Name}",
                     Title = "New patient in research",
                 };
-                await _userNotificationCommandRepository.AddNotificationAsync(workerNotification);
+                await _userNotificationService.AddNotificationAsync(workerNotification);
             }
             catch (EntityNotFoundException ex)
             {

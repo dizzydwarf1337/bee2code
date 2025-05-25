@@ -47,6 +47,8 @@ namespace Application.Services.Implementations.Researches
             _userResearchQueryRepository = userResearchQueryRepository;
         }
 
+
+        // Commands
         public async Task AddUserToResearchAsync(CreateUserResearchDto userResearchDto)
         {
             var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(userResearchDto.ResearchId));
@@ -70,12 +72,28 @@ namespace Application.Services.Implementations.Researches
             return _mapper.Map<ResearchDto>(await _researchCommandRepository.CreateResearchAsync(research));
         }
 
-        public Task DeleteResearchAsync(Guid researchId)
+        public async Task RemoveUserResearch(RemoveUserResearchDto removeUserResearchDto)
         {
-            throw new NotImplementedException();
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(removeUserResearchDto.ResearchId));
+            var userResearch = await _userResearchQueryRepository.GetUserResearchByIdAsync(Guid.Parse(removeUserResearchDto.UserId), research.Id);
+            await _userResearchCommandRepository.DeleteUserResearchAsync(research.Id, Guid.Parse(removeUserResearchDto.UserId));
+            await _fileService.DeleteFile(userResearch.AccteptationFilePath);
+
         }
 
+        public async Task<ResearchDto> UpdateResearchAsync(EditResearchDto editResearchDto)
+        {
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(editResearchDto.Id));
+            _mapper.Map(editResearchDto, research);
+            return _mapper.Map<ResearchDto>(await _researchCommandRepository.UpdateResearchAsync(research));
+        }
 
+        public async Task DeleteResearchAsync(Guid researchId)
+        {
+            await _researchCommandRepository.DeleteResearchAsync(researchId);
+        }
+
+        // Queries
         public Task<ResearchDto> GetResearchByIdAsync(Guid reseachId)
         {
             throw new NotImplementedException();
@@ -96,19 +114,9 @@ namespace Application.Services.Implementations.Researches
             throw new NotImplementedException();
         }
 
-        public async Task RemoveUserResearch(RemoveUserResearchDto removeUserResearchDto)
-        {
-            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(removeUserResearchDto.ResearchId));
-            var userResearch = await _userResearchQueryRepository.GetUserResearchByIdAsync(Guid.Parse(removeUserResearchDto.UserId), research.Id);
-            await _userResearchCommandRepository.DeleteUserResearchAsync(research.Id, Guid.Parse(removeUserResearchDto.UserId));
-            await _fileService.DeleteFile(userResearch.AccteptationFilePath);
+        
 
-        }
-
-        public Task<ResearchDto> UpdateResearchAsync(EditResearchDto research)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
             
 }

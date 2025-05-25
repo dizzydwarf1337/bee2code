@@ -82,6 +82,7 @@ namespace API.Core.ServiceConfig
                     services.AddScoped<IResearchService, ResearchService>();
                 // Users
                     services.AddScoped<IUserService, UserService>();
+                    services.AddScoped<IUserNotificationService, UserNotificationService>();
 
 
             services.AddScoped<IUserFactory, UserFactory>();

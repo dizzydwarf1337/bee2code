@@ -84,6 +84,17 @@ namespace Application.Core.Filters
                         context.Result = Forbidden(ex);
                     }
                 }
+                if (argument.Key.Equals("createLabTestResultDto", StringComparison.OrdinalIgnoreCase) && value is CreateLabTestResultDto createLabTestResultDto)
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidateLabTestOwnership(userId, Guid.Parse(createLabTestResultDto.LabTestId)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+                }
                 if (argument.Key.Equals("userResearchDto", StringComparison.OrdinalIgnoreCase) && value is CreateUserResearchDto userResearchDto) 
                 {
                     try
@@ -95,7 +106,7 @@ namespace Application.Core.Filters
                        context.Result = Forbidden(ex);
                     }
                 }
-                if (argument.Key.Equals("researchId", StringComparison.OrdinalIgnoreCase) && value is string researchId)
+                if (argument.Key.Equals("deleteResearchId", StringComparison.OrdinalIgnoreCase) && value is string researchId)
                 {
                     try
                     {
@@ -106,14 +117,68 @@ namespace Application.Core.Filters
                         context.Result = Forbidden(ex);
                     }
                 }
-
+                if (argument.Key.Equals("deleteLabTestId", StringComparison.OrdinalIgnoreCase) && value is string deleteLabTestId)
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidateLabTestOwnership(userId,Guid.Parse(deleteLabTestId)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+                }
+                if (argument.Key.Equals("deleteLabTestResultId", StringComparison.OrdinalIgnoreCase) && value is string deleteLabTestResultId)
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidateLabTestResultOwnership(userId, Guid.Parse(deleteLabTestResultId)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+                }
+                if (argument.Key.Equals("editLabTestDto", StringComparison.OrdinalIgnoreCase) && value is EditLabTestDto editLabTestDto)
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidateLabTestOwnership(userId, Guid.Parse(editLabTestDto.Id)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+                }
+                if (argument.Key.Equals("editLabTestResultDto", StringComparison.OrdinalIgnoreCase) && value is EditLabTestResultDto editLabTestResultDto)
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidateLabTestResultOwnership(userId, Guid.Parse(editLabTestResultDto.Id)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+                }
+                if (argument.Key.Equals("editResearchDto", StringComparison.OrdinalIgnoreCase) && value is EditResearchDto editResearchDto)
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidateResearchOwnership(userId, Guid.Parse(editResearchDto.Id)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+                }
             }
         }
 
         private ObjectResult Forbidden(Exception ex)
         {
             var response = ApiResponse<string>.Failure(ex.Message, 403);
-            return new ObjectResult(response) { StatusCode = 403 };
+            return new ObjectResult(response){ StatusCode = 403, Value = response};
         }
         public void OnActionExecuted(ActionExecutedContext context) { }
 

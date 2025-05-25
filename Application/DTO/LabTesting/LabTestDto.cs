@@ -14,15 +14,15 @@ namespace Application.DTO.LabTesting
 {
     public class LabTestDto
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public string Id { get; set; }
         public string Name { get; set; }
         public string? Description { get; set; }
         public LabTestType LabTestType { get; set; } = LabTestType.Other;
         public DateTime Date { get; set; }
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-        public Guid CreatorId { get; set; }
-        public Guid PatientId { get; set; }
-        public Guid ResearchId { get; set; }
-        public Guid? LabTestResultId { get; set; }
+        public DateTime CreatedAt { get; set; }
+        public string CreatorId { get; set; }
+        public string PatientId { get; set; }
+        public string ResearchId { get; set; }
+        public string? LabTestResultId { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Application.Features.Researches.Events.PatientAddedToResearch;
+using Application.Services.Interfaces.Users;
 using Domain.Interfaces.Commands.UsersCommands;
 using Domain.Interfaces.Queries.ResearchesQueries;
 using Domain.Interfaces.Queries.UserQueries;
@@ -15,16 +16,16 @@ namespace Application.Features.LabTests.Events.LabTestCreated
 {
     public class LabTestCreatedEventHandler : INotificationHandler<LabTestCreatedEvent>
     {
-        private readonly IUserNotificationCommandRepository _userNotificationCommandRepository;
+        private readonly IUserNotificationService _userNotificationService;
         private readonly IUserQueryRepository _userQueryRepository;
         private readonly ILogger<LabTestCreatedEventHandler> _logger;
         private readonly IResearchQueryRepository _researchQueryRepository;
-        public LabTestCreatedEventHandler(IUserNotificationCommandRepository userNotificationCommandRepository, 
+        public LabTestCreatedEventHandler(IUserNotificationService userNotificationService, 
             IUserQueryRepository userQueryRepository,
             ILogger<LabTestCreatedEventHandler> logger,
             IResearchQueryRepository researchQueryRepository)
         {
-            _userNotificationCommandRepository = userNotificationCommandRepository;
+            _userNotificationService = userNotificationService;
             _userQueryRepository = userQueryRepository;
             _logger = logger;
             _researchQueryRepository = researchQueryRepository;
@@ -43,7 +44,7 @@ namespace Application.Features.LabTests.Events.LabTestCreated
                     Title = "New Lab Test",
                     
                 };
-                await _userNotificationCommandRepository.AddNotificationAsync(usserNotification);
+                await _userNotificationService.AddNotificationAsync(usserNotification);
             }
             catch (Exception ex)
             {

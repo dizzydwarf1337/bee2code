@@ -29,7 +29,7 @@ namespace Application.Services.Implementations.LabTesting
             _mapper = mapper;
             _labTestQueryRepository = labTestQueryRepository;
         }
-
+        // Commands
         public async Task<LabTestResultDto> CreateLabTestResultAsync(CreateLabTestResultDto labTestResultDto)
         {
             var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(Guid.Parse(labTestResultDto.LabTestId));
@@ -44,11 +44,19 @@ namespace Application.Services.Implementations.LabTesting
             return _mapper.Map<LabTestResultDto>(await _labTestResultCommandRepository.CreateLabTestResultAsync(labTestResult));
 
         }
-
-        public Task DeleteLabTestResultAsync(Guid labTestResultId)
+        public async Task<LabTestResultDto> UpdateLabTestResultAsync(EditLabTestResultDto labTestResultDto)
         {
-            throw new NotImplementedException();
+            var labTestResult = await _labTestResultQueryRepository.GetLabTestResultByIdAsync(Guid.Parse(labTestResultDto.Id));
+            _mapper.Map(labTestResultDto, labTestResult);
+            return _mapper.Map<LabTestResultDto>(await _labTestResultCommandRepository.UpdateLabTestResultAsync(labTestResult));
         }
+
+        public async Task DeleteLabTestResultAsync(Guid labTestResultId)
+        {
+            await _labTestResultCommandRepository.DeleteLabTestResultAsync(labTestResultId);
+        }
+
+        // Queries
 
         public Task<LabTestResultDto> GetLabTestResultByIdAsync(Guid labTestResultId)
         {
@@ -70,9 +78,6 @@ namespace Application.Services.Implementations.LabTesting
             throw new NotImplementedException();
         }
 
-        public Task<LabTestResultDto> UpdateLabTestResultAsync(EditLabTestResultDto labTestResult)
-        {
-            throw new NotImplementedException();
-        }
+
     }
 }

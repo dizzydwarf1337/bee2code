@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Commands.UsersCommands;
+﻿using Application.Services.Interfaces.Users;
+using Domain.Interfaces.Commands.UsersCommands;
 using Domain.Interfaces.Queries.LabTestingQueries;
 using Domain.Models.Users;
 using MediatR;
@@ -13,14 +14,14 @@ namespace Application.Features.LabTestsResult.Events.LabTestResultCreated
 {
     public class LabTestResultCreatedEventHandler : INotificationHandler<LabTestResultCreatedEvent>
     {
-        private readonly IUserNotificationCommandRepository _userNotificationCommandRepository;
+        private readonly IUserNotificationService _userNotificationService;
         private readonly ILabTestQueryRepository _labTestQueryRepository;
         private readonly ILogger<LabTestResultCreatedEventHandler> _logger;
-        public LabTestResultCreatedEventHandler(IUserNotificationCommandRepository userNotificationCommandRepository,
+        public LabTestResultCreatedEventHandler(IUserNotificationService userNotificationService,
             ILabTestQueryRepository labTestQueryRepository,
             ILogger<LabTestResultCreatedEventHandler> logger)
         {
-            _userNotificationCommandRepository = userNotificationCommandRepository;
+            _userNotificationService = userNotificationService;
             _labTestQueryRepository = labTestQueryRepository;
             _logger = logger;
         }
@@ -36,7 +37,7 @@ namespace Application.Features.LabTestsResult.Events.LabTestResultCreated
                     Title = "Test result is ready",
                     Message = $"Your test result for {labTest.Name} is ready"
                 };
-                await _userNotificationCommandRepository.AddNotificationAsync(userNotification);
+                await _userNotificationService.AddNotificationAsync(userNotification);
             }
             catch (Exception ex)
             {

@@ -17,16 +17,32 @@ namespace Application.Core.Mapper
     {
         public AutoMapperProfiler()
         {
+            // User 
             CreateMap<UserDto, User>();
             CreateMap<User, UserDto>();
+            // LabTesting
             CreateMap<CreateLabTestDto, LabTest>();
             CreateMap<LabTest, LabTestDto>();
             CreateMap<LabTestDto, LabTest>();
+            CreateMap<LabTestResult, LabTestResultDto>();
+            CreateMap<LabTestResultDto, LabTestResult>();
+            CreateMap<EditLabTestDto, LabTest>();
+            CreateMap<EditLabTestResultDto, LabTestResult>();
+            CreateMap<LabTest, EditLabTestDto>();
+            CreateMap<LabTestResult, EditLabTestResultDto>();
+            // Research
             CreateMap<CreateResearchDto, Research>();
             CreateMap<ResearchDto, Research>();
             CreateMap<Research, ResearchDto>();
-            CreateMap<LabTestResult, LabTestResultDto>();
-            CreateMap<LabTestResultDto, LabTestResult>();
+            CreateMap<EditResearchDto, Research>()
+                .ForMember(dest => dest.OwnerId, opt =>
+                {
+                    opt.PreCondition(src => !string.IsNullOrWhiteSpace(src.OwnerId));
+                    opt.MapFrom(src => Guid.Parse(src.OwnerId!));
+                });
+            CreateMap<Research, EditResearchDto>()
+                .ForMember(dest=>dest.OwnerId,opt=>opt.MapFrom(src=>src.OwnerId.ToString()));
+
         }
     }
 }
