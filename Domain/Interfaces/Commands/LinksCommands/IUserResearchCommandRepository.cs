@@ -10,6 +10,6 @@ namespace Domain.Interfaces.Commands.LinksCommands
     public interface IUserResearchCommandRepository
     {
         Task<UserResearch> CreateUserResearchAsync(UserResearch userResearch);
-        Task DeleteUserResearchAsync(Guid researchId);
+        Task DeleteUserResearchAsync(Guid researchId, Guid userId);
     }
 }

@@ -37,10 +37,17 @@ namespace Application.Features.Researches.Events.PatientAddedToResearch
                 var usNotification = new UserNotification
                 {
                     UserId = user.Id,
-                    Message = $"You have been added to research:{research.Name}",
+                    Message = $"You have been added to research: {research.Name}",
                     Title = "New research",
                 };
                 await _userNotificationCommandRepository.AddNotificationAsync(usNotification);
+                var workerNotification = new UserNotification
+                {
+                    UserId = research.OwnerId,
+                    Message = $"{user.FirstName} {user.LastName} has been added to the research: {research.Name}",
+                    Title = "New patient in research",
+                };
+                await _userNotificationCommandRepository.AddNotificationAsync(workerNotification);
             }
             catch (EntityNotFoundException ex)
             {

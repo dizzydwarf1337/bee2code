@@ -47,11 +47,11 @@ namespace Application.Services.Implementations.Researches
             _userResearchQueryRepository = userResearchQueryRepository;
         }
 
-        public async Task AddUserToResearchAsync(UserResearchDto userResearchDto)
+        public async Task AddUserToResearchAsync(CreateUserResearchDto userResearchDto)
         {
             var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(userResearchDto.ResearchId));
             var user = await _userQueryRepository.GetUserByIdAsync(Guid.Parse(userResearchDto.UserId));
-            if (research.Patients.Any(x => x.UserId == user.Id)) throw new EntityAlreadyExistsException("Patient already participating in research");
+            if (research.Patients.Any(x => x.UserId == user.Id)) throw new EntityAlreadyExistsException("Patient in research");
             var userResearch = new UserResearch
             {
                 UserId = user.Id,
@@ -93,6 +93,15 @@ namespace Application.Services.Implementations.Researches
         public Task<ICollection<ResearchDto>> GetResearchesPaginatedAsync(int page, int pageSize)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task RemoveUserResearch(RemoveUserResearchDto removeUserResearchDto)
+        {
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(removeUserResearchDto.ResearchId));
+            var userResearch = await _userResearchQueryRepository.GetUserResearchByIdAsync(Guid.Parse(removeUserResearchDto.UserId), research.Id);
+            await _userResearchCommandRepository.DeleteUserResearchAsync(research.Id, Guid.Parse(removeUserResearchDto.UserId));
+            await _fileService.DeleteFile(userResearch.AccteptationFilePath);
+
         }
 
         public Task<ResearchDto> UpdateResearchAsync(EditResearchDto research)

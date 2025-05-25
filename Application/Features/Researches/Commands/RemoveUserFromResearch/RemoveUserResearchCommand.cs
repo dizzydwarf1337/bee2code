@@ -7,10 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Features.Researches.Commands.AddUserToResearch
+namespace Application.Features.Researches.Commands.RemoveUserFromResearch
 {
-    public class AddUserToResearchCommand : IRequest<ApiResponse<Unit>>
+    public class RemoveUserResearchCommand : IRequest<ApiResponse<Unit>>
     {
-        public CreateUserResearchDto userResearchDto { get; set; }
+        public RemoveUserResearchDto RemoveUserResearchDto{ get; set; }
     }
 }

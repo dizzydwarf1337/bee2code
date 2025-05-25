@@ -84,19 +84,29 @@ namespace Application.Core.Filters
                         context.Result = Forbidden(ex);
                     }
                 }
-                if (argument.Key.Equals("userResearchDto", StringComparison.OrdinalIgnoreCase) && value is UserResearchDto userResearchDto) 
+                if (argument.Key.Equals("userResearchDto", StringComparison.OrdinalIgnoreCase) && value is CreateUserResearchDto userResearchDto) 
                 {
                     try
                     {
                         _ownershipValidator.ValidateResearchOwnership(userId, Guid.Parse(userResearchDto.ResearchId)).Wait();
-                        _ownershipValidator.ValidateAccountOwnership(userId, Guid.Parse(userResearchDto.UserId)).Wait();
                     }
                     catch(Exception ex)
                     {
                        context.Result = Forbidden(ex);
                     }
                 }
-                
+                if (argument.Key.Equals("researchId", StringComparison.OrdinalIgnoreCase) && value is string researchId)
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidateResearchOwnership(userId, Guid.Parse(researchId)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+                }
+
             }
         }
 
