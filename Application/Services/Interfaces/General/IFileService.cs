@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Application.DTO.Researches;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,5 +12,6 @@ namespace Application.Services.Interfaces.General
     {
         Task<string> SaveFile(IFormFile file);
         Task DeleteFile(string FilePath);
+        Task<AcceptanceDownloadDto> DownloadFile(string FilePath);
     }
 }

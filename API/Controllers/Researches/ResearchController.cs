@@ -2,6 +2,7 @@
 using Application.Features.Researches.Commands.AddUserToResearch;
 using Application.Features.Researches.Commands.CreateResearch;
 using Application.Features.Researches.Commands.RemoveUserFromResearch;
+using Application.Features.Researches.Queries.DownloadUserAcceptance;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,16 @@ namespace API.Controllers.Researches
         public async Task<IActionResult> RemoveUserFromResearch([FromRoute]string userId, [FromRoute]string researchId)
         {
             return HandleResponse(await Mediator.Send(new RemoveUserResearchCommand { RemoveUserResearchDto = new RemoveUserResearchDto { UserId = userId, ResearchId = researchId } }));
+        }
+        [Authorize]
+        [HttpGet("downloadAcceptance/{userId}/{researchId}")]
+        public async Task<IActionResult> DownloadUserAccpetance([FromRoute]string userId, [FromRoute]string researchId)
+        {
+            var result = await Mediator.Send(new DownloadUserAcceptanceQuery { researchId = researchId, userId = userId });
+            Console.WriteLine(result.ContentType);
+            Console.WriteLine(result.FileName);
+            if (result.Content != null) return File(result.Content, result.ContentType, result.FileName);
+            else return NotFound();
         }
     }
 }

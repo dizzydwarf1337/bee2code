@@ -75,6 +75,7 @@ namespace Application.Services.Implementations.Researches
             throw new NotImplementedException();
         }
 
+
         public Task<ResearchDto> GetResearchByIdAsync(Guid reseachId)
         {
             throw new NotImplementedException();
@@ -109,4 +110,5 @@ namespace Application.Services.Implementations.Researches
             throw new NotImplementedException();
         }
     }
+            
 }

@@ -1,6 +1,8 @@
-﻿using Application.Services.Interfaces.General;
+﻿using Application.DTO.Researches;
+using Application.Services.Interfaces.General;
 using Domain.Exceptions.BusinessExceptions;
 using Domain.Exceptions.DataExceptions;
+using Domain.Models.Links;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -53,6 +55,19 @@ namespace Application.Services.Implementations.General
             }
 
             return Task.CompletedTask;
+        }
+
+        public async Task<AcceptanceDownloadDto> DownloadFile(string FilePath)
+        {
+            var absolutePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", FilePath.Replace("/", Path.DirectorySeparatorChar.ToString()));
+            var content = await File.ReadAllBytesAsync(absolutePath);
+            var extension = Path.GetExtension(absolutePath).ToLowerInvariant();
+            return new AcceptanceDownloadDto
+            {
+                Content = content,
+                FileName = $"Acceptance{extension}",
+                ContentType = extension == ".pdf" ? "application/pdf" : "image/jpg"
+            };
         }
     }
 }
