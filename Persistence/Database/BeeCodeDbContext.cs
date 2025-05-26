@@ -40,7 +40,7 @@ namespace Persistence.Database
                 .WithMany() 
                 .HasForeignKey(l => l.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
- 
+
         }
     }
 }

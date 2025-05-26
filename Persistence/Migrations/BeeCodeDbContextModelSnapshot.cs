@@ -69,7 +69,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LabTests");
+                    b.ToTable("LabTests", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.LabTesting.LabTestResult", b =>
@@ -93,7 +93,7 @@ namespace Persistence.Migrations
                     b.HasIndex("LabTestId")
                         .IsUnique();
 
-                    b.ToTable("LabTestResults");
+                    b.ToTable("LabTestResults", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Links.UserResearch", b =>
@@ -113,7 +113,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ResearchId");
 
-                    b.ToTable("UserResearches");
+                    b.ToTable("UserResearches", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Researches.Research", b =>
@@ -139,7 +139,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Researches");
+                    b.ToTable("Researches", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Models.Users.User", b =>
@@ -259,7 +259,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserNotifications");
+                    b.ToTable("UserNotifications", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>

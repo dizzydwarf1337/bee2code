@@ -24,9 +24,15 @@ namespace Application.Services.Implementations.Users
             _mapper = mapper;
         }
 
-        public Task DeleteUser(Guid userId)
+        public async Task DeleteUser(Guid userId)
         {
-            throw new NotImplementedException();
+            await _userCommandRepository.DeleteUserAsync(userId);
+        }
+        public async Task<UserDto> UpdateUser(EditUserDto userDto)
+        {
+            var userUpdate = await _userQueryRepository.GetUserByIdAsync(Guid.Parse(userDto.Id));
+            _mapper.Map(userDto, userUpdate);
+            return _mapper.Map<UserDto>(await _userCommandRepository.UpdateUserAsync(userUpdate));
         }
 
         public Task<ICollection<UserDto>> GetAllUsersPaginatedAsync(int page, int pageSize)
@@ -49,9 +55,6 @@ namespace Application.Services.Implementations.Users
             throw new NotImplementedException();
         }
 
-        public Task UpdateUser(UserDto userDto)
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }

@@ -20,6 +20,8 @@ namespace Application.Core.Mapper
             // User 
             CreateMap<UserDto, User>();
             CreateMap<User, UserDto>();
+            CreateMap<User, EditUserDto>();
+            CreateMap<EditUserDto, User>();
             // LabTesting
             CreateMap<CreateLabTestDto, LabTest>();
             CreateMap<LabTest, LabTestDto>();
