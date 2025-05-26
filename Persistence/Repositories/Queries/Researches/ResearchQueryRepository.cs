@@ -17,12 +17,19 @@ namespace Persistence.Repositories.Queries.Researches
         {
         }
 
-        public async Task<Research> GetResearchByIdAsync(Guid reseachId)
+        public async Task<Research> GetResearchByIdAsync(Guid reseachId, Guid? userId, string? userRole = "Patient")
         {
-            return await _context.Researches
-                .Include(x => x.Patients)
-                .Include(x => x.LabTests)
-                .FirstOrDefaultAsync(x => x.Id == reseachId) ?? throw new EntityNotFoundException("Research");
+            var query = _context.Researches.AsQueryable();
+            if(userRole == "Admin" || userRole == "Worker")
+            {
+                query = query.Include(x=>x.LabTests).Include(x=>x.Patients).Where(x => x.Id == reseachId);
+            }
+            else
+            {
+                query = query.Include(x => x.LabTests.Where(x => x.PatientId == userId)).Where(x => x.Id == reseachId);
+            }
+            var research = await query.FirstOrDefaultAsync() ?? throw new EntityNotFoundException("Research");
+            return research;
         }
 
         public async Task<ICollection<Research>> GetResearchesByOwnerIdAsync(Guid ownerId)

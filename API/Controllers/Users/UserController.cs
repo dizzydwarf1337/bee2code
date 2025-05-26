@@ -28,5 +28,7 @@ namespace API.Controllers.Users
         {
             return HandleResponse(await Mediator.Send(new MarkNotificationReadCommand { notificationId = notificationId }));
         }
+
+        
     }
 }

@@ -11,7 +11,7 @@ namespace Domain.Interfaces.Queries.ResearchesQueries
     {
         Task<ICollection<Research>> GetResearchesPaginatedAsync(int page, int pageSize);
         Task<ICollection<Research>> GetResearchesByUserIdAsync(Guid userId); // User reseaches
-        Task<Research> GetResearchByIdAsync(Guid reseachId);
+        Task<Research> GetResearchByIdAsync(Guid reseachId, Guid? userId, string? userRole = "Patient");
         Task<ICollection<Research>> GetResearchesByOwnerIdAsync(Guid ownerId);
     }
 }

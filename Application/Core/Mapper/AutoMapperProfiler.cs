@@ -35,7 +35,8 @@ namespace Application.Core.Mapper
             // Research
             CreateMap<CreateResearchDto, Research>();
             CreateMap<ResearchDto, Research>();
-            CreateMap<Research, ResearchDto>();
+            CreateMap<Research, ResearchDto>()
+                .ForMember(x=>x.Patients,opt=>opt.Ignore());
             CreateMap<EditResearchDto, Research>()
                 .ForMember(dest => dest.OwnerId, opt =>
                 {

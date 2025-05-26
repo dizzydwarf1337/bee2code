@@ -36,7 +36,7 @@ namespace Application.Features.LabTests.Events.LabTestCreated
             try
             {
                 var patient = await _userQueryRepository.GetUserByIdAsync(Guid.Parse(notification.patientId));
-                var reserach = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(notification.researchId));
+                var reserach = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(notification.researchId), null, "Admin");
                 var usserNotification = new UserNotification
                 {
                     UserId = patient.Id,

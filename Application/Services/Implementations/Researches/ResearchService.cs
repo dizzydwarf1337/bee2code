@@ -1,4 +1,5 @@
 ﻿using Application.DTO.Researches;
+using Application.DTO.Users;
 using Application.Services.Interfaces.General;
 using Application.Services.Interfaces.Researches;
 using AutoMapper;
@@ -51,7 +52,7 @@ namespace Application.Services.Implementations.Researches
         // Commands
         public async Task AddUserToResearchAsync(CreateUserResearchDto userResearchDto)
         {
-            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(userResearchDto.ResearchId));
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(userResearchDto.ResearchId),null,"Admin");
             var user = await _userQueryRepository.GetUserByIdAsync(Guid.Parse(userResearchDto.UserId));
             if (research.Patients.Any(x => x.UserId == user.Id)) throw new EntityAlreadyExistsException("Patient in research");
             var userResearch = new UserResearch
@@ -74,7 +75,7 @@ namespace Application.Services.Implementations.Researches
 
         public async Task RemoveUserResearch(RemoveUserResearchDto removeUserResearchDto)
         {
-            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(removeUserResearchDto.ResearchId));
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(removeUserResearchDto.ResearchId),null,"Admin");
             var userResearch = await _userResearchQueryRepository.GetUserResearchByIdAsync(Guid.Parse(removeUserResearchDto.UserId), research.Id);
             await _userResearchCommandRepository.DeleteUserResearchAsync(research.Id, Guid.Parse(removeUserResearchDto.UserId));
             await _fileService.DeleteFile(userResearch.AccteptationFilePath);
@@ -83,7 +84,7 @@ namespace Application.Services.Implementations.Researches
 
         public async Task<ResearchDto> UpdateResearchAsync(EditResearchDto editResearchDto)
         {
-            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(editResearchDto.Id));
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(editResearchDto.Id), null, "Admin");
             _mapper.Map(editResearchDto, research);
             return _mapper.Map<ResearchDto>(await _researchCommandRepository.UpdateResearchAsync(research));
         }
@@ -94,9 +95,16 @@ namespace Application.Services.Implementations.Researches
         }
 
         // Queries
-        public Task<ResearchDto> GetResearchByIdAsync(Guid reseachId)
+        public async Task<ResearchDto> GetResearchByIdAsync(Guid reseachId, Guid? userId, string? userRole = "Patient")
         {
-            throw new NotImplementedException();
+            var research = await _researchQueryRepository.GetResearchByIdAsync(reseachId, userId, userRole);
+            var researchDto = new ResearchDto();
+            _mapper.Map(research, researchDto);
+            if(userRole != "Patient")
+            {
+                researchDto.Patients = _mapper.Map<List<UserDto>>(await _userQueryRepository.GetUsersByResearchIdAsync(reseachId));
+            }
+            return researchDto;
         }
 
         public Task<ICollection<ResearchDto>> GetResearchesByOwnerIdAsync(Guid ownerId)

@@ -30,7 +30,7 @@ namespace Application.Features.LabTestsResult.Events.LabTestResultCreated
         {
             try
             {
-                var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(Guid.Parse(notification.labTestId));
+                var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(Guid.Parse(notification.labTestId),null,"Admin");
                 var userNotification = new UserNotification
                 {
                     UserId = labTest.PatientId,

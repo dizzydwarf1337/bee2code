@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence.Database;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,14 +20,22 @@ namespace Persistence.Repositories.Queries.LabTesting
         {
         }
 
-        public async Task<LabTest> GetLabTestByIdAsync(Guid labTestId)
+        public async Task<LabTest> GetLabTestByIdAsync(Guid labTestId, Guid? userId, string? UserRole = "Patient")
         {
-           var labTest = await _context.LabTests
-                .Include(x => x.Patient)
-                .Include(x => x.Creator)
-                .Include(x => x.LabTestResult)
-                .FirstOrDefaultAsync(l => l.Id == labTestId) ?? throw new EntityNotFoundException("labTest");
-            return labTest; 
+            IQueryable<LabTest> query = _context.LabTests;
+
+            if (UserRole == "Admin" || UserRole=="Worker")
+            {
+                query = query.Where(x => x.Id == labTestId);
+
+            }
+            else 
+            {
+                query = query.Where(x => x.Id == labTestId && x.PatientId == userId);
+            }
+            var labTest = await query.Include(x=>x.LabTestResult).FirstOrDefaultAsync() ?? throw new EntityNotFoundException("LabTest");
+            return labTest;
+
         }
 
         public async Task<ICollection<LabTest>> GetLabTestsByCreatorIdAsync(Guid creatorId)

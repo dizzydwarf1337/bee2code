@@ -32,7 +32,7 @@ namespace Application.Services.Implementations.LabTesting
         // Commands
         public async Task<LabTestResultDto> CreateLabTestResultAsync(CreateLabTestResultDto labTestResultDto)
         {
-            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(Guid.Parse(labTestResultDto.LabTestId));
+            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(Guid.Parse(labTestResultDto.LabTestId), null, "Admin");
 
             var labTestResult = new LabTestResult
             {

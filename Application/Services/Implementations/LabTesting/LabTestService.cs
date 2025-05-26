@@ -44,7 +44,7 @@ namespace Application.Services.Implementations.LabTesting
         public async Task<LabTestDto> CreateLabTestAsync(CreateLabTestDto labTestDto)
         {
             var patient = await _userQueryRepository.GetUserByIdAsync(Guid.Parse(labTestDto.PatientId));
-            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(labTestDto.ResearchId));
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(labTestDto.ResearchId), null, "Admin");
 
             if (!research.Patients.Any(x=>x.UserId==patient.Id)) throw new EntityNotFoundException("User in research");
             
@@ -59,7 +59,7 @@ namespace Application.Services.Implementations.LabTesting
         }
         public async Task<LabTestDto> UpdateLabTestAsync(EditLabTestDto editLabTestDto)
         {
-            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(Guid.Parse(editLabTestDto.Id));
+            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(Guid.Parse(editLabTestDto.Id),null,"Admin");
             _mapper.Map(editLabTestDto, labTest);
             return _mapper.Map<LabTestDto>(await _labTestCommandRepository.UpdateLabTestAsync(labTest));
         }
@@ -72,9 +72,9 @@ namespace Application.Services.Implementations.LabTesting
 
 
         // Queries
-        public Task<LabTestDto> GetLabTestByIdAsync(Guid labTestId)
+        public async Task<LabTestDto> GetLabTestByIdAsync(Guid labTestId, Guid UserId, string? UserRole = "Patient")
         {
-            throw new NotImplementedException();
+            return _mapper.Map<LabTestDto>(await _labTestQueryRepository.GetLabTestByIdAsync(labTestId, UserId, UserRole));
         }
 
         public Task<ICollection<LabTestDto>> GetLabTestsByCreatorIdAsync(Guid creatorId)

@@ -5,9 +5,11 @@ using Application.Features.Researches.Commands.DeleteResearch;
 using Application.Features.Researches.Commands.EditResearch;
 using Application.Features.Researches.Commands.RemoveUserFromResearch;
 using Application.Features.Researches.Queries.DownloadUserAcceptance;
+using Application.Features.Researches.Queries.GetResearchById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace API.Controllers.Researches
 {
@@ -53,6 +55,13 @@ namespace API.Controllers.Researches
         {
             return HandleResponse(await Mediator.Send(new DeleteResearchCommand { researchId=researchId }));
         }
-
+        [Authorize]
+        [HttpGet("{researchId}")]
+        public async Task<IActionResult> GetResearchById([FromRoute]string researchId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            return HandleResponse(await Mediator.Send(new GetResearchByIdQuery { researchId = researchId,userId = userId,userRole=role}));
+        }
     }
 }

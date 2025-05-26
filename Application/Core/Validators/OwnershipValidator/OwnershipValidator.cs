@@ -36,7 +36,7 @@ namespace Application.Core.Validators.OwnershipValidator
 
         public async Task ValidateLabTestOwnership(Guid userId, Guid labTestId)
         {
-            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(labTestId) ?? throw new AccessForbiddenException("ValidateLabTestOwnership", userId.ToString(),"User has no access to this test or test doesn't exists");
+            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(labTestId,null,"Admin") ?? throw new AccessForbiddenException("ValidateLabTestOwnership", userId.ToString(),"User has no access to this test or test doesn't exists");
             if(labTest.CreatorId != userId) throw new AccessForbiddenException("ValidateLabTestOwnership", userId.ToString(), "User have no right for this resourse");
         }
 
@@ -48,7 +48,7 @@ namespace Application.Core.Validators.OwnershipValidator
 
         public async Task ValidateResearchOwnership(Guid userId, Guid researchId)
         {
-            var research = await _researchQueryRepository.GetResearchByIdAsync(researchId) ?? throw new AccessForbiddenException("ValidateResearchOwnership",userId.ToString(),"User has no access to this research or research doesn't exists");
+            var research = await _researchQueryRepository.GetResearchByIdAsync(researchId,null,"Admin") ?? throw new AccessForbiddenException("ValidateResearchOwnership",userId.ToString(),"User has no access to this research or research doesn't exists");
             if (research.OwnerId != userId) throw new AccessForbiddenException("ValidateResearchOwnership", userId.ToString(), "User has no access to this resource");
         }
 

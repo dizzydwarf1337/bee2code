@@ -13,7 +13,7 @@ namespace Application.Services.Interfaces.Researches
         Task<ResearchDto> CreateResearchAsync(CreateResearchDto research);
         Task DeleteResearchAsync(Guid researchId);
         Task<ResearchDto> UpdateResearchAsync(EditResearchDto research);
-        Task<ResearchDto> GetResearchByIdAsync(Guid reseachId);
+        Task<ResearchDto> GetResearchByIdAsync(Guid reseachId, Guid? userId, string? userRole = "Patient");
         Task<ICollection<ResearchDto>> GetResearchesByOwnerIdAsync(Guid ownerId);
         Task<ICollection<ResearchDto>> GetResearchesByUserIdAsync(Guid userId);
         Task<ICollection<ResearchDto>> GetResearchesPaginatedAsync(int page, int pageSize);
