@@ -15,5 +15,6 @@ namespace Application.Services.Interfaces.Users
         Task<UserDto> GetUserByEmailAsync(string email);
         Task<ICollection<UserDto>> GetUsersByResearchIdAsync(Guid researchId);
         Task<ICollection<UserDto>> GetAllUsersPaginatedAsync(int page, int pageSize);
+        Task GrantUserRole(Guid userId, string role);
     }
 }

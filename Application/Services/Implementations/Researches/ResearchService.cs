@@ -107,24 +107,15 @@ namespace Application.Services.Implementations.Researches
             return researchDto;
         }
 
-        public Task<ICollection<ResearchDto>> GetResearchesByOwnerIdAsync(Guid ownerId)
+        public async Task<List<ResearchPreviewDto>> GetResearchesFiltredPaginated(Guid? ownerId = null, Guid? participantId = null, int? page = null, int? pageSize = null)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<List<ResearchPreviewDto>>(await _researchQueryRepository.GetResearchesFiltredPaginated(ownerId, participantId, page, pageSize));
         }
 
-        public Task<ICollection<ResearchDto>> GetResearchesByUserIdAsync(Guid userId)
+        public async Task<List<ResearchDto>> GetPatientResearchesPaginated(Guid patientId,int Page, int PageSize)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<List<ResearchDto>>(await _researchQueryRepository.GetResearchesByPatientIdPaginatedAsync(patientId, Page, PageSize));
         }
-
-        public Task<ICollection<ResearchDto>> GetResearchesPaginatedAsync(int page, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-
-       
     }
             
 }

@@ -33,7 +33,7 @@ namespace Domain.Models.Users
         public virtual ICollection<UserResearch>? PatientResearches { get; set; } = new List<UserResearch>();
         public virtual ICollection<LabTest>? LabTests { get; set; } = new List<LabTest>();
         public virtual ICollection<UserNotification>? Notifications { get; set; } = new List<UserNotification>();
-        public virtual ICollection<Research>? MyResearch { get; set; } = new List<Research>();// Created researches by uesr
+        public virtual ICollection<Research>? MyResearch { get; set; } = new List<Research>();// Created researches by user
 
     }
 }

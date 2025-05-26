@@ -5,10 +5,13 @@ using Application.Features.Researches.Commands.DeleteResearch;
 using Application.Features.Researches.Commands.EditResearch;
 using Application.Features.Researches.Commands.RemoveUserFromResearch;
 using Application.Features.Researches.Queries.DownloadUserAcceptance;
+using Application.Features.Researches.Queries.GetPatientResearchesPaginated;
 using Application.Features.Researches.Queries.GetResearchById;
+using Application.Features.Researches.Queries.GetReserchesFiltredPaginated;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Runtime.CompilerServices;
 using System.Security.Claims;
 
 namespace API.Controllers.Researches
@@ -63,5 +66,18 @@ namespace API.Controllers.Researches
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
             return HandleResponse(await Mediator.Send(new GetResearchByIdQuery { researchId = researchId,userId = userId,userRole=role}));
         }
+        [Authorize(Roles = "Admin,Worker")]
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetResarchesFiltredPaginated([FromQuery] string? ownerId, [FromQuery] string? patientId, [FromQuery] int page, [FromQuery] int PageSize)
+        {
+            return HandleResponse(await Mediator.Send(new GetResearchesFiltredPaginatedQuery { ownerId = ownerId, patientId = patientId, Page =page, PageSize =PageSize }));
+        }
+        [Authorize]
+        [HttpGet("user/{getResearchesByPatientId}")]
+        public async Task<IActionResult> GetPatientResearchesPaginated([FromRoute]string getResearchesByPatientId, [FromQuery] int page, [FromQuery]int pageSize)
+        {
+            return HandleResponse(await Mediator.Send(new GetPatientResearchesPaginatedQuery { patientId = getResearchesByPatientId, page = page, pageSize = pageSize }));
+        }
+
     }
 }

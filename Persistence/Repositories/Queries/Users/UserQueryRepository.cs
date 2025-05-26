@@ -24,15 +24,17 @@ namespace Persistence.Repositories.Queries.Users
 
         public async Task<User> GetUserByEmailAsync(string email)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Email == email) ?? throw new EntityNotFoundException("User");
+            return await _context.Users
+                .Include(x=>x.MyResearch)
+                .Include(x=>x.Notifications)
+                .Include(x=>x.LabTests)
+                .FirstOrDefaultAsync(x => x.Email == email) ?? throw new EntityNotFoundException("User");
         }
 
         public async Task<User> GetUserByIdAsync(Guid userId)
         {
             return (await _context.Users
                 .Include(x => x.LabTests)
-                .Include(x => x.MyResearch)
-                .Include(x => x.PatientResearches)
                 .FirstOrDefaultAsync(x=>x.Id==userId))?? throw new EntityNotFoundException("User");
         }
 

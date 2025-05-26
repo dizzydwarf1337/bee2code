@@ -25,14 +25,17 @@ namespace Domain.Models.LabTesting
         public DateTime Date { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        [ForeignKey(name:"Creator")]
+        
         public Guid CreatorId{ get; set; }
+        [ForeignKey("CreatorId")]
         public virtual User? Creator { get; set; }
-        [ForeignKey("Patient")]
+        
         public Guid PatientId{ get; set; }
+        [ForeignKey("PatientId")]
         public virtual User? Patient { get; set; }
-        [ForeignKey("Research")]
+
         public Guid ResearchId { get; set; }
+        [ForeignKey("ResearchId")]
         public virtual Research? Research { get; set; }
         public Guid? LabTestResultId { get; set; }
         public virtual LabTestResult? LabTestResult { get; set; }

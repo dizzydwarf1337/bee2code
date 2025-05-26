@@ -14,9 +14,8 @@ namespace Application.Services.Interfaces.Researches
         Task DeleteResearchAsync(Guid researchId);
         Task<ResearchDto> UpdateResearchAsync(EditResearchDto research);
         Task<ResearchDto> GetResearchByIdAsync(Guid reseachId, Guid? userId, string? userRole = "Patient");
-        Task<ICollection<ResearchDto>> GetResearchesByOwnerIdAsync(Guid ownerId);
-        Task<ICollection<ResearchDto>> GetResearchesByUserIdAsync(Guid userId);
-        Task<ICollection<ResearchDto>> GetResearchesPaginatedAsync(int page, int pageSize);
+        Task<List<ResearchPreviewDto>> GetResearchesFiltredPaginated(Guid? ownerId = null, Guid? participantId = null, int? page = null, int? pageSize = null);
+        Task<List<ResearchDto>> GetPatientResearchesPaginated(Guid patientId, int Page, int PageSize);
         Task AddUserToResearchAsync(CreateUserResearchDto userResearch);
         Task RemoveUserResearch(RemoveUserResearchDto removeUserResearchDto);
     }

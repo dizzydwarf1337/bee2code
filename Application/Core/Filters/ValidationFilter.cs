@@ -196,6 +196,17 @@ namespace Application.Core.Filters
                         context.Result = Forbidden(ex);
                     }
                 }
+                if (argument.Key.Equals("getResearchesByPatientId", StringComparison.OrdinalIgnoreCase) && value is string patientId && userRole == "Patient")
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidateAccountOwnership(userId, Guid.Parse(patientId)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+                }
             }
         }
 

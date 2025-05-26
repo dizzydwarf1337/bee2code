@@ -17,7 +17,7 @@ namespace Application.DTO.Researches
         public string Name { get; set; }
         public string? Description { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; }
         public Guid OwnerId { get; set; }
         public List<UserDto> Patients { get; set; } = new List<UserDto>();
         public List<LabTestDto> LabTest { get; set; } = new List<LabTestDto>();

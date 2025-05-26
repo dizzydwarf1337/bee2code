@@ -19,9 +19,15 @@ namespace Application.Core.Mapper
         {
             // User 
             CreateMap<UserDto, User>();
-            CreateMap<User, UserDto>();
+            CreateMap<User, UserDto>()
+                .ForMember(x => x.PatientResearches, opt => opt.MapFrom(x => x.PatientResearches))
+                .ForMember(x => x.Notifications, opt => opt.MapFrom(x => x.Notifications))
+                .ForMember(x => x.MyResearch, opt => opt.MapFrom(x => x.MyResearch))
+                .ForMember(x => x.LabTests, opt => opt.MapFrom(x => x.LabTests));
             CreateMap<User, EditUserDto>();
             CreateMap<EditUserDto, User>();
+            CreateMap<UserNotification, UserNotificationDto>();
+            CreateMap<UserNotificationDto, UserNotification>();
             // LabTesting
             CreateMap<CreateLabTestDto, LabTest>();
             CreateMap<LabTest, LabTestDto>();
@@ -36,7 +42,8 @@ namespace Application.Core.Mapper
             CreateMap<CreateResearchDto, Research>();
             CreateMap<ResearchDto, Research>();
             CreateMap<Research, ResearchDto>()
-                .ForMember(x=>x.Patients,opt=>opt.Ignore());
+                .ForMember(x => x.Patients, opt => opt.Ignore())
+                .ForMember(x => x.LabTest, opt => opt.MapFrom(x => x.LabTests));
             CreateMap<EditResearchDto, Research>()
                 .ForMember(dest => dest.OwnerId, opt =>
                 {
@@ -45,7 +52,7 @@ namespace Application.Core.Mapper
                 });
             CreateMap<Research, EditResearchDto>()
                 .ForMember(dest=>dest.OwnerId,opt=>opt.MapFrom(src=>src.OwnerId.ToString()));
-
+            CreateMap<Research, ResearchPreviewDto>();
         }
     }
 }
