@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.DTO.Researches
+namespace Application.DTO.General
 {
-    public class UserResearchDto
+    public class EmailDto
     {
+        public string Email { get; set; }
     }
 }

@@ -19,10 +19,10 @@ namespace Persistence.Repositories.Queries.Researches
 
         public async Task<Research> GetResearchByIdAsync(Guid reseachId)
         {
-            return (await _context.Researches
+            return await _context.Researches
                 .Include(x => x.Patients)
                 .Include(x => x.LabTests)
-                .FirstOrDefaultAsync(x => x.Id == reseachId)) ?? throw new EntityNotFoundException("Research");
+                .FirstOrDefaultAsync(x => x.Id == reseachId) ?? throw new EntityNotFoundException("Research");
         }
 
         public async Task<ICollection<Research>> GetResearchesByOwnerIdAsync(Guid ownerId)

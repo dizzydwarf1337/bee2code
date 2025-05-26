@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces.Commands.LinksCommands;
+﻿using Domain.Exceptions.BusinessExceptions;
+using Domain.Interfaces.Commands.LinksCommands;
 using Domain.Models.Links;
 using Microsoft.EntityFrameworkCore;
 using Persistence.Database;
@@ -23,12 +24,12 @@ namespace Persistence.Repositories.Commands.Links
             return await _context.UserResearches
                 .Include(x=>x.User)
                 .Include(x=>x.Research)
-                .FirstOrDefaultAsync(x=>x.UserId == userResearch.UserId && x.ResearchId==userResearch.ResearchId) ?? throw new Exception("UserResearch not created"); 
+                .FirstOrDefaultAsync(x=>x.UserId == userResearch.UserId && x.ResearchId==userResearch.ResearchId) ?? throw new EntityCreatingException("UserResearch","UserResearchCommandRepository.CreateUserResearchAsync"); 
         }
 
-        public async Task DeleteUserResearchAsync(Guid researchId)
+        public async Task DeleteUserResearchAsync(Guid researchId, Guid userId)
         {
-            var userResearch = await _context.UserResearches.FindAsync(researchId) ?? throw new Exception("UserResearch not found");
+            var userResearch = await _context.UserResearches.FirstOrDefaultAsync(x=>x.UserId==userId && x.ResearchId==researchId) ?? throw new EntityNotFoundException("UserResearch");
             _context.UserResearches.Remove(userResearch);
             await _context.SaveChangesAsync();
         }

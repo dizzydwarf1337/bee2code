@@ -12,6 +12,7 @@ namespace Application.Services.Interfaces.Users
         Task DeleteUser(Guid userId);
         Task UpdateUser(UserDto userDto);
         Task<UserDto> GetUserByIdAsync(Guid userId);
+        Task<UserDto> GetUserByEmailAsync(string email);
         Task<ICollection<UserDto>> GetUsersByResearchIdAsync(Guid researchId);
         Task<ICollection<UserDto>> GetAllUsersPaginatedAsync(int page, int pageSize);
     }

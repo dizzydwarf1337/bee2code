@@ -85,6 +85,7 @@ namespace Persistence.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Result")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -164,6 +165,7 @@ namespace Persistence.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -466,7 +468,7 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Models.Users.UserNotification", b =>
                 {
                     b.HasOne("Domain.Models.Users.User", "User")
-                        .WithMany()
+                        .WithMany("Notifications")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -542,6 +544,8 @@ namespace Persistence.Migrations
                     b.Navigation("LabTests");
 
                     b.Navigation("MyResearch");
+
+                    b.Navigation("Notifications");
 
                     b.Navigation("PatientResearches");
                 });

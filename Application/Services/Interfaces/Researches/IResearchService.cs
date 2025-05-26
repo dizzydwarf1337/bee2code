@@ -1,4 +1,5 @@
 ﻿using Application.DTO.Researches;
+using Application.Features.Researches.Commands.RemoveUserFromResearch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,7 @@ namespace Application.Services.Interfaces.Researches
         Task<ICollection<ResearchDto>> GetResearchesByOwnerIdAsync(Guid ownerId);
         Task<ICollection<ResearchDto>> GetResearchesByUserIdAsync(Guid userId);
         Task<ICollection<ResearchDto>> GetResearchesPaginatedAsync(int page, int pageSize);
-        Task AddUserToResearchAsync(UserResearchDto userResearch);
+        Task AddUserToResearchAsync(CreateUserResearchDto userResearch);
+        Task RemoveUserResearch(RemoveUserResearchDto removeUserResearchDto);
     }
 }

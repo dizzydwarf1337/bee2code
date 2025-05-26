@@ -38,7 +38,6 @@ namespace Persistence.Repositories.Commands.LabTesting
 
         public async Task<LabTest> UpdateLabTestAsync(LabTest labTest)
         {
-            var labTestDb = await _context.LabTests.FirstOrDefaultAsync(x => x.Id == labTest.Id) ?? throw new EntityNotFoundException("LabTest");
             _context.Update(labTest);
             await _context.SaveChangesAsync();
             return labTest;
