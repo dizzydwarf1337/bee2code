@@ -23,10 +23,12 @@ namespace Application.Services.Implementations.General
                 throw new InvalidDataProvidedException("File", "", "FileService.SaveFile");
             }
 
+            string uploadsFolder = Path.Combine(_baseFilePath, "uploads");
+            Directory.CreateDirectory(uploadsFolder);
+
             string fileName = Guid.NewGuid() + Path.GetExtension(file.FileName);
             string filePath = Path.Combine(_baseFilePath, "uploads", fileName);
 
-            Directory.CreateDirectory(_baseFilePath);
 
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
