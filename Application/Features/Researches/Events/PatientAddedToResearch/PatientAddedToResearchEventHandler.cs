@@ -33,7 +33,7 @@ namespace Application.Features.Researches.Events.PatientAddedToResearch
             try
             {
                 var user = await _userQueryRepostiory.GetUserByIdAsync(Guid.Parse(notification.userId));
-                var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(notification.researchId));
+                var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(notification.researchId),null, "Admin");
                 var usNotification = new UserNotification
                 {
                     UserId = user.Id,

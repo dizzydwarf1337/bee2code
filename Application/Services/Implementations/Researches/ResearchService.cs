@@ -1,10 +1,13 @@
-﻿using Application.DTO.Researches;
+﻿using Application.DTO.LabTesting;
+using Application.DTO.Researches;
+using Application.DTO.Users;
 using Application.Services.Interfaces.General;
 using Application.Services.Interfaces.Researches;
 using AutoMapper;
 using Domain.Exceptions.BusinessExceptions;
 using Domain.Interfaces.Commands.LinksCommands;
 using Domain.Interfaces.Commands.ResearchesCommands;
+using Domain.Interfaces.Queries.LabTestingQueries;
 using Domain.Interfaces.Queries.LinksQueries;
 using Domain.Interfaces.Queries.ResearchesQueries;
 using Domain.Interfaces.Queries.UserQueries;
@@ -26,6 +29,7 @@ namespace Application.Services.Implementations.Researches
         private readonly IUserResearchCommandRepository _userResearchCommandRepository;
         private readonly IUserResearchQueryRepository _userResearchQueryRepository;
         private readonly IUserQueryRepository _userQueryRepository;
+        private readonly ILabTestQueryRepository _labTestQueryRepository;
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
 
@@ -35,7 +39,8 @@ namespace Application.Services.Implementations.Researches
             IMapper mapper,
             IFileService fileService,
             IUserResearchQueryRepository userResearchQueryRepository,
-            IUserResearchCommandRepository userResearchCommandRepository
+            IUserResearchCommandRepository userResearchCommandRepository,
+            ILabTestQueryRepository labTestQueryRepository
             )
         {
             _researchCommandRepository = researchCommandRepository;
@@ -45,13 +50,14 @@ namespace Application.Services.Implementations.Researches
             _fileService = fileService;
             _userResearchCommandRepository = userResearchCommandRepository;
             _userResearchQueryRepository = userResearchQueryRepository;
+            _labTestQueryRepository = labTestQueryRepository;
         }
 
 
         // Commands
         public async Task AddUserToResearchAsync(CreateUserResearchDto userResearchDto)
         {
-            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(userResearchDto.ResearchId));
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(userResearchDto.ResearchId),null,"Admin");
             var user = await _userQueryRepository.GetUserByIdAsync(Guid.Parse(userResearchDto.UserId));
             if (research.Patients.Any(x => x.UserId == user.Id)) throw new EntityAlreadyExistsException("Patient in research");
             var userResearch = new UserResearch
@@ -74,7 +80,7 @@ namespace Application.Services.Implementations.Researches
 
         public async Task RemoveUserResearch(RemoveUserResearchDto removeUserResearchDto)
         {
-            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(removeUserResearchDto.ResearchId));
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(removeUserResearchDto.ResearchId),null,"Admin");
             var userResearch = await _userResearchQueryRepository.GetUserResearchByIdAsync(Guid.Parse(removeUserResearchDto.UserId), research.Id);
             await _userResearchCommandRepository.DeleteUserResearchAsync(research.Id, Guid.Parse(removeUserResearchDto.UserId));
             await _fileService.DeleteFile(userResearch.AccteptationFilePath);
@@ -83,7 +89,7 @@ namespace Application.Services.Implementations.Researches
 
         public async Task<ResearchDto> UpdateResearchAsync(EditResearchDto editResearchDto)
         {
-            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(editResearchDto.Id));
+            var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(editResearchDto.Id), null, "Admin");
             _mapper.Map(editResearchDto, research);
             return _mapper.Map<ResearchDto>(await _researchCommandRepository.UpdateResearchAsync(research));
         }
@@ -94,29 +100,28 @@ namespace Application.Services.Implementations.Researches
         }
 
         // Queries
-        public Task<ResearchDto> GetResearchByIdAsync(Guid reseachId)
+        public async Task<ResearchDto> GetResearchByIdAsync(Guid reseachId, Guid? userId, string? userRole = "Patient")
         {
-            throw new NotImplementedException();
+            var research = await _researchQueryRepository.GetResearchByIdAsync(reseachId, userId, userRole);
+            var researchDto = new ResearchDto();
+            _mapper.Map(research, researchDto);
+            if(userRole != "Patient")
+            {
+                researchDto.LabTest = _mapper.Map<List<LabTestDto>>(await _labTestQueryRepository.GetLabTestsByResearchIdAsync(reseachId));
+                researchDto.Patients = _mapper.Map<List<UserPreviewDto>>(await _userQueryRepository.GetUsersByResearchIdAsync(reseachId));
+            }
+            return researchDto;
         }
 
-        public Task<ICollection<ResearchDto>> GetResearchesByOwnerIdAsync(Guid ownerId)
+        public async Task<List<ResearchPreviewDto>> GetResearchesFiltredPaginated(Guid? ownerId = null, Guid? participantId = null, int? page = null, int? pageSize = null)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<List<ResearchPreviewDto>>(await _researchQueryRepository.GetResearchesFiltredPaginated(ownerId, participantId, page, pageSize));
         }
 
-        public Task<ICollection<ResearchDto>> GetResearchesByUserIdAsync(Guid userId)
+        public async Task<List<ResearchDto>> GetPatientResearchesPaginated(Guid patientId,int Page, int PageSize)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<List<ResearchDto>>(await _researchQueryRepository.GetResearchesByPatientIdPaginatedAsync(patientId, Page, PageSize));
         }
-
-        public Task<ICollection<ResearchDto>> GetResearchesPaginatedAsync(int page, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
-        
-
-       
     }
             
 }

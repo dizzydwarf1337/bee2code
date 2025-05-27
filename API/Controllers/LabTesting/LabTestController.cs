@@ -2,10 +2,12 @@
 using Application.Features.LabTests.Commands.CreateLabTest;
 using Application.Features.LabTests.Commands.DeleteLabTest;
 using Application.Features.LabTests.Commands.EditLabTest;
+using Application.Features.LabTests.Queries.GetLabTestById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 
 namespace API.Controllers.LabTesting
 {
@@ -28,6 +30,14 @@ namespace API.Controllers.LabTesting
         public async Task<IActionResult> UpdateLabTest([FromBody]EditLabTestDto editLabTestDto)
         {
             return HandleResponse(await Mediator.Send(new EditLabTestCommand { EditLabTestDto = editLabTestDto }));
+        }
+        [Authorize]
+        [HttpGet("{getLabTestId}")]
+        public async Task<IActionResult> GetLabTestById([FromRoute] string getLabTestId)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            return HandleResponse(await Mediator.Send(new GetLabTestByIdQuery { labTestId = getLabTestId, userId = userId, userRole = role }));
         }
     }
 }

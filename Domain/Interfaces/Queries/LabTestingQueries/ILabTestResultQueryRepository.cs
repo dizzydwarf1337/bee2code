@@ -9,9 +9,6 @@ namespace Domain.Interfaces.Queries.LabTestingQueries
 {
     public interface ILabTestResultQueryRepository
     {
-        Task<ICollection<LabTestResult>> GetLabTestResultsPaginatedAsync(int page, int pageSize);
         Task<LabTestResult> GetLabTestResultByIdAsync(Guid labTestResultId);
-        Task<ICollection<LabTestResult>> GetLabTestResultsByUserIdAsync(Guid userId);
-        Task<ICollection<LabTestResult>> GetLabTestResultsByLabTestIdAsync(Guid labTestId);
-    }
+    }   
 }

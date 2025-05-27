@@ -10,10 +10,10 @@ namespace Application.Services.Interfaces.Users
     public interface IUserService 
     {
         Task DeleteUser(Guid userId);
-        Task UpdateUser(UserDto userDto);
+        Task<UserDto> UpdateUser(EditUserDto userDto);
         Task<UserDto> GetUserByIdAsync(Guid userId);
         Task<UserDto> GetUserByEmailAsync(string email);
-        Task<ICollection<UserDto>> GetUsersByResearchIdAsync(Guid researchId);
-        Task<ICollection<UserDto>> GetAllUsersPaginatedAsync(int page, int pageSize);
+        Task<List<UserDto>> GetAllUsersPaginatedAsync(int page, int pageSize);
+        Task GrantUserRole(Guid userId, string role);
     }
 }

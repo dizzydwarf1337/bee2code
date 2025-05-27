@@ -35,7 +35,7 @@ namespace Application.Features.Researches.Events.RemoveUserFromResearch
             try
             {
                 var user = await _userQueryRepository.GetUserByIdAsync(Guid.Parse(notification.userId));
-                var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(notification.researchId));
+                var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(notification.researchId), null, "Admin");
                 var userNotification = new UserNotification
                 {
                     UserId = user.Id,

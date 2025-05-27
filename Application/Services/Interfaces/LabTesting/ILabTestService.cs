@@ -12,7 +12,7 @@ namespace Application.Services.Interfaces.LabTesting
         Task<LabTestDto> CreateLabTestAsync(CreateLabTestDto labTest);
         Task DeleteLabTestAsync(Guid labTestId);
         Task<LabTestDto> UpdateLabTestAsync(EditLabTestDto editLabTestDto);
-        Task<LabTestDto> GetLabTestByIdAsync(Guid labTestId);
+        Task<LabTestDto> GetLabTestByIdAsync(Guid labTestId, Guid UserId, string? UserRole = "Patient" );
         Task<ICollection<LabTestDto>> GetLabTestsByCreatorIdAsync(Guid creatorId);
         Task<ICollection<LabTestDto>> GetLabTestsByResearchIdAsync(Guid researchId);
         Task<ICollection<LabTestDto>> GetLabTestsByUserIdAsync(Guid userId);

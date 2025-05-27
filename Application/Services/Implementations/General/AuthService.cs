@@ -1,11 +1,13 @@
 ﻿using Application.Core.Factories.Interfaces;
 using Application.DTO.General;
+using Application.DTO.Researches;
 using Application.DTO.Users;
 using Application.Services.Interfaces.General;
 using Application.Services.Interfaces.Users;
 using AutoMapper;
 using Domain.Exceptions.BusinessExceptions;
 using Domain.Exceptions.DataExceptions;
+using Domain.Interfaces.Queries.ResearchesQueries;
 using Domain.Interfaces.Queries.UserQueries;
 using Domain.Models.Users;
 using Microsoft.AspNetCore.Identity;
@@ -23,15 +25,22 @@ namespace Application.Services.Implementations.General
         private readonly IUserFactory _userFactory;
         private readonly ITokenService _tokenService;
         private readonly IUserQueryRepository _userQueryRepository;
+        private readonly IResearchQueryRepository _researchQueryRepository;
         private readonly IMapper _mapper;
 
-        public AuthService(UserManager<User> userManager, IUserFactory userFactory, ITokenService tokenService, IMapper mapper, IUserQueryRepository userQueryRepository)
+        public AuthService(UserManager<User> userManager, 
+            IUserFactory userFactory, 
+            ITokenService tokenService, 
+            IMapper mapper, 
+            IUserQueryRepository userQueryRepository,
+            IResearchQueryRepository researchQueryRepository)
         {
             _userManager = userManager;
             _userFactory = userFactory;
             _tokenService = tokenService;
             _mapper = mapper;
             _userQueryRepository = userQueryRepository;
+            _researchQueryRepository = researchQueryRepository;
         }
 
         public async Task<UserDto> Login(LoginDto loginDto)
@@ -45,6 +54,7 @@ namespace Application.Services.Implementations.General
             var token = await _tokenService.GetLoginToken(user.Id);
             var userDto = _mapper.Map<UserDto>(user);
             userDto.Token = token;
+            userDto.PatientResearches = _mapper.Map<List<ResearchPreviewDto>> (await _researchQueryRepository.GetResearchesByPatientIdPaginatedAsync(user.Id,1,int.MaxValue));
             userDto.Role = await _userManager.IsInRoleAsync(user, "Admin") ? "Admin" : (await _userManager.IsInRoleAsync(user, "Worker") ? "Worker" : "Patient");
             return userDto;
         }

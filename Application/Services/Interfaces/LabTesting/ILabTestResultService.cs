@@ -13,8 +13,5 @@ namespace Application.Services.Interfaces.LabTesting
         Task DeleteLabTestResultAsync(Guid labTestResultId);
         Task<LabTestResultDto> UpdateLabTestResultAsync(EditLabTestResultDto labTestResult);
         Task<LabTestResultDto> GetLabTestResultByIdAsync(Guid labTestResultId);
-        Task<ICollection<LabTestResultDto>> GetLabTestResultsByLabTestIdAsync(Guid labTestId);
-        Task<ICollection<LabTestResultDto>> GetLabTestResultsByUserIdAsync(Guid userId);
-        Task<ICollection<LabTestResultDto>> GetLabTestResultsPaginatedAsync(int page, int pageSize);
     }
 }

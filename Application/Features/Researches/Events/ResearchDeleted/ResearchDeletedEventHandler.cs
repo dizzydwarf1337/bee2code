@@ -34,7 +34,7 @@ namespace Application.Features.Researches.Events.ResearchDeleted
         {
             try
             {
-                var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(notification.researchId));
+                var research = await _researchQueryRepository.GetResearchByIdAsync(Guid.Parse(notification.researchId), null, "Admin");
                 var worker = await _userQueryRepository.GetUserByIdAsync(research.OwnerId);
                 var patients = await _userQueryRepository.GetUsersByResearchIdAsync(research.Id);
                 var workerNotification = new UserNotification

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.13.36105.23 d17.13
+VisualStudioVersion = 17.13.36105.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{5D18B4C5-8BCD-46C4-9D23-E30F67A07F32}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -20,8 +20,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API", "API\API.csproj", "{A
 	ProjectSection(ProjectDependencies) = postProject
 		{A9194D42-1695-4BD6-A141-5AA635242B0E} = {A9194D42-1695-4BD6-A141-5AA635242B0E}
 	EndProjectSection
-EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "client-app", "client-app\client-app.esproj", "{C1D2396F-39FD-D991-348A-5086ABC5A005}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,12 +43,6 @@ Global
 		{AFFDC667-3FBF-4837-A8E9-10B75468AB68}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFFDC667-3FBF-4837-A8E9-10B75468AB68}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFFDC667-3FBF-4837-A8E9-10B75468AB68}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1D2396F-39FD-D991-348A-5086ABC5A005}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C1D2396F-39FD-D991-348A-5086ABC5A005}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C1D2396F-39FD-D991-348A-5086ABC5A005}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{C1D2396F-39FD-D991-348A-5086ABC5A005}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C1D2396F-39FD-D991-348A-5086ABC5A005}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C1D2396F-39FD-D991-348A-5086ABC5A005}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

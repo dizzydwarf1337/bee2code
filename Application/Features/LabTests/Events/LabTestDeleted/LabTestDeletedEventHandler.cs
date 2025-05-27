@@ -35,7 +35,7 @@ namespace Application.Features.LabTests.Events.LabTestDeleted
         {
             try
             {
-                var labTest = await _labTestQueryRepostiory.GetLabTestByIdAsync(Guid.Parse(notification.LabTestId));
+                var labTest = await _labTestQueryRepostiory.GetLabTestByIdAsync(Guid.Parse(notification.LabTestId),null,"Admin");
                 var creator = await _userQueryRepository.GetUserByIdAsync(labTest.CreatorId);
                 var userNotification = new UserNotification
                 {

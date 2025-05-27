@@ -32,7 +32,7 @@ namespace Application.Services.Implementations.LabTesting
         // Commands
         public async Task<LabTestResultDto> CreateLabTestResultAsync(CreateLabTestResultDto labTestResultDto)
         {
-            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(Guid.Parse(labTestResultDto.LabTestId));
+            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(Guid.Parse(labTestResultDto.LabTestId), null, "Admin");
 
             var labTestResult = new LabTestResult
             {
@@ -58,26 +58,10 @@ namespace Application.Services.Implementations.LabTesting
 
         // Queries
 
-        public Task<LabTestResultDto> GetLabTestResultByIdAsync(Guid labTestResultId)
+        public async Task<LabTestResultDto> GetLabTestResultByIdAsync(Guid labTestResultId)
         {
-            throw new NotImplementedException();
+            return _mapper.Map<LabTestResultDto>(await _labTestResultQueryRepository.GetLabTestResultByIdAsync(labTestResultId));
         }
-
-        public Task<ICollection<LabTestResultDto>> GetLabTestResultsByLabTestIdAsync(Guid labTestId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ICollection<LabTestResultDto>> GetLabTestResultsByUserIdAsync(Guid userId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<ICollection<LabTestResultDto>> GetLabTestResultsPaginatedAsync(int page, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
-
 
     }
 }

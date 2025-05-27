@@ -31,16 +31,16 @@ namespace Persistence.Database
 
             modelBuilder.Entity<LabTest>()
                 .HasOne(l => l.Creator)
-                .WithMany()
+                .WithMany(x=>x.CreatedLabTests)
                 .HasForeignKey(l => l.CreatorId)
                 .OnDelete(DeleteBehavior.Restrict); 
 
             modelBuilder.Entity<LabTest>()
                 .HasOne(l => l.Patient)
-                .WithMany() 
+                .WithMany(x=>x.LabTests) 
                 .HasForeignKey(l => l.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
- 
+
         }
     }
 }

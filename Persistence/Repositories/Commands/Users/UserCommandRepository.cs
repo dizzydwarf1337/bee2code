@@ -20,14 +20,17 @@ namespace Persistence.Repositories.Commands.Users
 
         public async Task DeleteUserAsync(Guid userId)
         {
-            var user = (await _context.Users.FirstOrDefaultAsync(x => x.Id == userId)) ?? throw new EntityCreatingException("User", "UserCommandRepository.DeleteUser");
+            var user = (await _context.Users.FirstOrDefaultAsync(x => x.Id == userId)) ?? throw new EntityNotFoundException("User");
+            await _context.LabTests
+                .Where(x => x.PatientId == userId)
+                .ExecuteDeleteAsync(); 
+
             _context.Users.Remove(user);
             await _context.SaveChangesAsync();
         }
 
         public async Task<User> UpdateUserAsync(User user)
         {
-            _ = (await _context.Users.FindAsync(user.Id)) ?? throw new EntityNotFoundException("User");
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
             return user;
