@@ -1,4 +1,5 @@
-﻿using Application.DTO.Researches;
+﻿using Application.DTO.LabTesting;
+using Application.DTO.Researches;
 using Application.DTO.Users;
 using Application.Services.Interfaces.General;
 using Application.Services.Interfaces.Researches;
@@ -6,6 +7,7 @@ using AutoMapper;
 using Domain.Exceptions.BusinessExceptions;
 using Domain.Interfaces.Commands.LinksCommands;
 using Domain.Interfaces.Commands.ResearchesCommands;
+using Domain.Interfaces.Queries.LabTestingQueries;
 using Domain.Interfaces.Queries.LinksQueries;
 using Domain.Interfaces.Queries.ResearchesQueries;
 using Domain.Interfaces.Queries.UserQueries;
@@ -27,6 +29,7 @@ namespace Application.Services.Implementations.Researches
         private readonly IUserResearchCommandRepository _userResearchCommandRepository;
         private readonly IUserResearchQueryRepository _userResearchQueryRepository;
         private readonly IUserQueryRepository _userQueryRepository;
+        private readonly ILabTestQueryRepository _labTestQueryRepository;
         private readonly IMapper _mapper;
         private readonly IFileService _fileService;
 
@@ -36,7 +39,8 @@ namespace Application.Services.Implementations.Researches
             IMapper mapper,
             IFileService fileService,
             IUserResearchQueryRepository userResearchQueryRepository,
-            IUserResearchCommandRepository userResearchCommandRepository
+            IUserResearchCommandRepository userResearchCommandRepository,
+            ILabTestQueryRepository labTestQueryRepository
             )
         {
             _researchCommandRepository = researchCommandRepository;
@@ -46,6 +50,7 @@ namespace Application.Services.Implementations.Researches
             _fileService = fileService;
             _userResearchCommandRepository = userResearchCommandRepository;
             _userResearchQueryRepository = userResearchQueryRepository;
+            _labTestQueryRepository = labTestQueryRepository;
         }
 
 
@@ -102,7 +107,8 @@ namespace Application.Services.Implementations.Researches
             _mapper.Map(research, researchDto);
             if(userRole != "Patient")
             {
-                researchDto.Patients = _mapper.Map<List<UserDto>>(await _userQueryRepository.GetUsersByResearchIdAsync(reseachId));
+                researchDto.LabTest = _mapper.Map<List<LabTestDto>>(await _labTestQueryRepository.GetLabTestsByResearchIdAsync(reseachId));
+                researchDto.Patients = _mapper.Map<List<UserPreviewDto>>(await _userQueryRepository.GetUsersByResearchIdAsync(reseachId));
             }
             return researchDto;
         }

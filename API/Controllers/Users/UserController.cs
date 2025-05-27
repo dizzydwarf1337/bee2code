@@ -3,6 +3,7 @@ using Application.Features.Users.Commands.DeleteUser;
 using Application.Features.Users.Commands.EditUser;
 using Application.Features.Users.Commands.GrantUserRole;
 using Application.Features.Users.Commands.MarkNotificationRead;
+using Application.Features.Users.Queries.GetAllUsersPaginated;
 using Application.Features.Users.Queries.GetUserById;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -30,17 +31,23 @@ namespace API.Controllers.Users
         {
             return HandleResponse(await Mediator.Send(new MarkNotificationReadCommand { notificationId = notificationId }));
         }
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("role")]
         public async Task<IActionResult> GrantUserRole(GrandUserRoleDto grandUserRoleDto)
         {
             return HandleResponse(await Mediator.Send(new GrandUserRoleCommand { GrandUserRole = grandUserRoleDto }));
         }
-        [Authorize(Roles ="Admin,Worker")]
+        [Authorize(Roles = "Admin,Worker")]
         [HttpGet("{getUserId}")]
         public async Task<IActionResult> GetUserById([FromRoute] string getUserId)
         {
             return HandleResponse(await Mediator.Send(new GetUserByIdQuery { userId = getUserId }));
+        }
+        [Authorize(Roles = "Admin,Worker")]
+        [HttpGet("filter")]
+        public async Task<IActionResult> GetUsersFiltredPaginated( [FromQuery] int page, [FromQuery]int PageSize)
+        {
+            return HandleResponse(await Mediator.Send(new GetAllUsersPaginatedQuery { page = page, pageSize = PageSize}));
         }
     }
 }

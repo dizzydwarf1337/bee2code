@@ -49,10 +49,6 @@ namespace Application.Services.Implementations.Users
             return _mapper.Map<UserDto>(await _userCommandRepository.UpdateUserAsync(userUpdate));
         }
 
-        public Task<ICollection<UserDto>> GetAllUsersPaginatedAsync(int page, int pageSize)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<UserDto> GetUserByEmailAsync(string email)
         {
@@ -68,10 +64,7 @@ namespace Application.Services.Implementations.Users
             return userDto;
         }
 
-        public Task<ICollection<UserDto>> GetUsersByResearchIdAsync(Guid researchId)
-        {
-            throw new NotImplementedException();
-        }
+
 
         public async Task GrantUserRole(Guid userId, string role)
         {
@@ -83,6 +76,11 @@ namespace Application.Services.Implementations.Users
             await _userManager.RemoveFromRoleAsync(user, "Patient");
             await _userManager.AddToRoleAsync(user, role);
             await _userManager.RemoveAuthenticationTokenAsync(user, "Default", "Jwt bearer");
+        }
+
+        public async Task<List<UserDto>> GetAllUsersPaginatedAsync(int page, int pageSize)
+        {
+            return _mapper.Map<List<UserDto>>(await _userQueryRepository.GetAllUsersPaginatedAsync(page, pageSize));
         }
     }
 }

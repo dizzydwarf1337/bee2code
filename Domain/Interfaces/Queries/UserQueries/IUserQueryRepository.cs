@@ -12,6 +12,6 @@ namespace Domain.Interfaces.Queries.UserQueries
         Task<ICollection<User>> GetAllUsersPaginatedAsync(int page, int pageSize);
         Task<User> GetUserByIdAsync(Guid userId);
         Task<User> GetUserByEmailAsync(string email);
-        Task<ICollection<User>> GetUsersByResearchIdAsync(Guid researchId);
+        Task<List<User>> GetUsersByResearchIdAsync(Guid researchId);
     }
 }

@@ -26,6 +26,10 @@ namespace Application.Core.Mapper
                 .ForMember(x => x.LabTests, opt => opt.MapFrom(x => x.LabTests));
             CreateMap<User, EditUserDto>();
             CreateMap<EditUserDto, User>();
+            CreateMap<User, UserPreviewDto>();
+            CreateMap<UserPreviewDto, User>();
+            CreateMap<UserDto, UserPreviewDto>();
+            CreateMap<UserPreviewDto, UserDto>();
             CreateMap<UserNotification, UserNotificationDto>();
             CreateMap<UserNotificationDto, UserNotification>();
             // LabTesting
@@ -43,7 +47,7 @@ namespace Application.Core.Mapper
             CreateMap<ResearchDto, Research>();
             CreateMap<Research, ResearchDto>()
                 .ForMember(x => x.Patients, opt => opt.Ignore())
-                .ForMember(x => x.LabTest, opt => opt.MapFrom(x => x.LabTests));
+                .ForMember(x => x.LabTest, opt => opt.Ignore());
             CreateMap<EditResearchDto, Research>()
                 .ForMember(dest => dest.OwnerId, opt =>
                 {

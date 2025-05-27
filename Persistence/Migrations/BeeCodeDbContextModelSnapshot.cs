@@ -56,9 +56,6 @@ namespace Persistence.Migrations
                     b.Property<Guid>("ResearchId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("CreatorId");
@@ -67,9 +64,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ResearchId");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("LabTests", (string)null);
+                    b.ToTable("LabTests");
                 });
 
             modelBuilder.Entity("Domain.Models.LabTesting.LabTestResult", b =>
@@ -93,7 +88,7 @@ namespace Persistence.Migrations
                     b.HasIndex("LabTestId")
                         .IsUnique();
 
-                    b.ToTable("LabTestResults", (string)null);
+                    b.ToTable("LabTestResults");
                 });
 
             modelBuilder.Entity("Domain.Models.Links.UserResearch", b =>
@@ -113,7 +108,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("ResearchId");
 
-                    b.ToTable("UserResearches", (string)null);
+                    b.ToTable("UserResearches");
                 });
 
             modelBuilder.Entity("Domain.Models.Researches.Research", b =>
@@ -139,7 +134,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Researches", (string)null);
+                    b.ToTable("Researches");
                 });
 
             modelBuilder.Entity("Domain.Models.Users.User", b =>
@@ -259,7 +254,7 @@ namespace Persistence.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserNotifications", (string)null);
+                    b.ToTable("UserNotifications");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<System.Guid>", b =>
@@ -396,13 +391,13 @@ namespace Persistence.Migrations
             modelBuilder.Entity("Domain.Models.LabTesting.LabTest", b =>
                 {
                     b.HasOne("Domain.Models.Users.User", "Creator")
-                        .WithMany()
+                        .WithMany("CreatedLabTests")
                         .HasForeignKey("CreatorId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Domain.Models.Users.User", "Patient")
-                        .WithMany()
+                        .WithMany("LabTests")
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -412,10 +407,6 @@ namespace Persistence.Migrations
                         .HasForeignKey("ResearchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("Domain.Models.Users.User", null)
-                        .WithMany("LabTests")
-                        .HasForeignKey("UserId");
 
                     b.Navigation("Creator");
 
@@ -541,6 +532,8 @@ namespace Persistence.Migrations
 
             modelBuilder.Entity("Domain.Models.Users.User", b =>
                 {
+                    b.Navigation("CreatedLabTests");
+
                     b.Navigation("LabTests");
 
                     b.Navigation("MyResearch");

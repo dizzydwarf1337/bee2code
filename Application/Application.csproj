@@ -7,9 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Auth\Events\" />
-    <Folder Include="Features\LabTestsResult\Queries\GetLabTestResultById\" />
+    <Folder Include="Features\Auth\Queries\" />
     <Folder Include="Features\Users\Events\" />
   </ItemGroup>
 

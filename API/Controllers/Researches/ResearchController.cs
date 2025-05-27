@@ -41,8 +41,6 @@ namespace API.Controllers.Researches
         public async Task<IActionResult> DownloadUserAccpetance([FromRoute]string userId, [FromRoute]string researchId)
         {
             var result = await Mediator.Send(new DownloadUserAcceptanceQuery { researchId = researchId, userId = userId });
-            Console.WriteLine(result.ContentType);
-            Console.WriteLine(result.FileName);
             if (result.Content != null) return File(result.Content, result.ContentType, result.FileName);
             else return NotFound();
         }
@@ -53,10 +51,10 @@ namespace API.Controllers.Researches
             return HandleResponse(await Mediator.Send(new EditResearchCommand { EditResearchDto = editResearchDto }));
         }
         [Authorize(Roles ="Admin,Worker")]
-        [HttpDelete("delete/{researchId}")]
-        public async Task<IActionResult> DeleteResearch([FromRoute]string researchId)
+        [HttpDelete("delete/{deleteResearchId}")]
+        public async Task<IActionResult> DeleteResearch([FromRoute]string deleteResearchId)
         {
-            return HandleResponse(await Mediator.Send(new DeleteResearchCommand { researchId=researchId }));
+            return HandleResponse(await Mediator.Send(new DeleteResearchCommand { researchId= deleteResearchId }));
         }
         [Authorize]
         [HttpGet("{researchId}")]

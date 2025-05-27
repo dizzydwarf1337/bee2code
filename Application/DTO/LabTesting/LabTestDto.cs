@@ -23,6 +23,6 @@ namespace Application.DTO.LabTesting
         public string CreatorId { get; set; }
         public string PatientId { get; set; }
         public string ResearchId { get; set; }
-        public string? LabTestResultId { get; set; }
+        public string LabTestResultId{ get; set; }
     }
 }

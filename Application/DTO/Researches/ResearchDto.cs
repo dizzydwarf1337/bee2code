@@ -19,7 +19,7 @@ namespace Application.DTO.Researches
 
         public DateTime CreatedAt { get; set; }
         public Guid OwnerId { get; set; }
-        public List<UserDto> Patients { get; set; } = new List<UserDto>();
+        public List<UserPreviewDto> Patients { get; set; } = new List<UserPreviewDto>();
         public List<LabTestDto> LabTest { get; set; } = new List<LabTestDto>();
     }
 }
