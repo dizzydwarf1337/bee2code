@@ -16,9 +16,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(opt=>opt.Filters.Add<ValidationFilter>());
 
-builder.Services.AddDbContext<BeeCodeDbContext>(opt =>
-    opt.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=BeeCode;Integrated Security=True;TrustServerCertificate=True;")
-);
+var connectionString = builder.Configuration.GetConnectionString("BeeCodeConnection");
+
+builder.Services.AddDbContext<BeeCodeDbContext>(opt => opt.UseSqlServer(connectionString));
 builder.Services.AddCors(opt =>
 {
     opt.AddPolicy("CorsPolicy", policy =>
@@ -101,9 +101,11 @@ builder.Services.AddAuthentication(options =>
 ServiceConfig.ConfigureServices(builder.Services);
 
 var app = builder.Build();
-
 using (var scope = app.Services.CreateScope())
 {
+    var db = scope.ServiceProvider.GetRequiredService<BeeCodeDbContext>();
+    db.Database.Migrate();
+
     var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<Guid>>>();
 
     string[] roleNames = { "Admin", "Patient", "Worker" };
