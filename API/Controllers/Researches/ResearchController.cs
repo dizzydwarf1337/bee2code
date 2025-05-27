@@ -37,10 +37,10 @@ namespace API.Controllers.Researches
             return HandleResponse(await Mediator.Send(new RemoveUserResearchCommand { RemoveUserResearchDto = new RemoveUserResearchDto { UserId = userId, ResearchId = deleteResearchId } }));
         }
         [Authorize]
-        [HttpGet("downloadAcceptance/{userId}/{researchId}")]
-        public async Task<IActionResult> DownloadUserAccpetance([FromRoute]string userId, [FromRoute]string researchId)
+        [HttpGet("downloadAcceptance/{downloadAcceptanceUserId}/{researchId}")]
+        public async Task<IActionResult> DownloadUserAccpetance([FromRoute]string downloadAcceptanceUserId, [FromRoute]string researchId)
         {
-            var result = await Mediator.Send(new DownloadUserAcceptanceQuery { researchId = researchId, userId = userId });
+            var result = await Mediator.Send(new DownloadUserAcceptanceQuery { researchId = researchId, userId = downloadAcceptanceUserId });
             if (result.Content != null) return File(result.Content, result.ContentType, result.FileName);
             else return NotFound();
         }

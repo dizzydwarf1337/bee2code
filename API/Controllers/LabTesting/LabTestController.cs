@@ -32,12 +32,12 @@ namespace API.Controllers.LabTesting
             return HandleResponse(await Mediator.Send(new EditLabTestCommand { EditLabTestDto = editLabTestDto }));
         }
         [Authorize]
-        [HttpGet("{labTestId}")]
-        public async Task<IActionResult> GetLabTestById([FromRoute] string labTestId)
+        [HttpGet("{getLabTestId}")]
+        public async Task<IActionResult> GetLabTestById([FromRoute] string getLabTestId)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
-            return HandleResponse(await Mediator.Send(new GetLabTestByIdQuery { labTestId = labTestId, userId = userId, userRole = role }));
+            return HandleResponse(await Mediator.Send(new GetLabTestByIdQuery { labTestId = getLabTestId, userId = userId, userRole = role }));
         }
     }
 }

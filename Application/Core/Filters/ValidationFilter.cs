@@ -206,7 +206,45 @@ namespace Application.Core.Filters
                     {
                         context.Result = Forbidden(ex);
                     }
+                    
                 }
+                if (argument.Key.Equals("downloadAcceptanceUserId", StringComparison.OrdinalIgnoreCase) && value is string downloadAcceptanceUserId && userRole == "Patient")
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidateAccountOwnership(userId, Guid.Parse(downloadAcceptanceUserId)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+                    
+                }
+                if (argument.Key.Equals("getLabTestId", StringComparison.OrdinalIgnoreCase) && value is string getLabTestId && userRole == "Patient")
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidatePatientLabTest(userId, Guid.Parse(getLabTestId)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+
+                }
+                if (argument.Key.Equals("getLabTestResultId", StringComparison.OrdinalIgnoreCase) && value is string getLabTestResultId && userRole == "Patient")
+                {
+                    try
+                    {
+                        _ownershipValidator.ValidatePatientLabTestResult(userId,Guid.Parse(getLabTestResultId)).Wait();
+                    }
+                    catch (Exception ex)
+                    {
+                        context.Result = Forbidden(ex);
+                    }
+
+                }
+
             }
         }
 

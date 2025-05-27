@@ -39,7 +39,11 @@ namespace Application.Core.Validators.OwnershipValidator
             var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(labTestId,null,"Admin") ?? throw new AccessForbiddenException("ValidateLabTestOwnership", userId.ToString(),"User has no access to this test or test doesn't exists");
             if(labTest.CreatorId != userId) throw new AccessForbiddenException("ValidateLabTestOwnership", userId.ToString(), "User have no right for this resourse");
         }
-
+        public async Task ValidatePatientLabTest(Guid userId,Guid labTestId)
+        {
+            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(labTestId, userId, "Patient") ?? throw new AccessForbiddenException("ValidatePatientLabTest", userId.ToString(), "User has no access to this test or test doesn't exists");
+            if (labTest.PatientId != userId) throw new AccessForbiddenException("ValidatePatientLabTest", userId.ToString(), "User have no right for this resourse");
+        }
         public async Task ValidateLabTestResultOwnership(Guid userId, Guid labTestResultId)
         {
             var labTestResult = await _labTestResultQueryRepository.GetLabTestResultByIdAsync(labTestResultId) ?? throw new AccessForbiddenException("ValidateLabTestResultOwnership",userId.ToString(),"User has no access to this test result or it doesn't exists");
@@ -57,6 +61,16 @@ namespace Application.Core.Validators.OwnershipValidator
             var user = await _userQueryRepository.GetUserByIdAsync(userId);
             if (!user.Email.Equals(email, StringComparison.OrdinalIgnoreCase)) throw new AccessForbiddenException("ValidateUserEmailOwnership", userId.ToString(), "User email confirmation failed"); 
 
+        }
+
+        public async Task ValidatePatientLabTestResult(Guid userId, Guid labTestResultId)
+        {
+            var labTestResult = await _labTestResultQueryRepository.GetLabTestResultByIdAsync(labTestResultId) ?? throw new AccessForbiddenException("ValidatePatientLabTestResult", userId.ToString(), "User has no access to this test result or it doesn't exists");
+            var labTest = await _labTestQueryRepository.GetLabTestByIdAsync(labTestResult.LabTestId, null, "Admin");
+            if (labTest.PatientId != userId)
+            {
+                throw new AccessForbiddenException("ValidatePatientLabTestResult", userId.ToString(), "User has no access to this resource");
+            }
         }
     }
 }
